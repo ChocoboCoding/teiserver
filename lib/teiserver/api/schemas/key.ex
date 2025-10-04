@@ -1,4 +1,4 @@
-defmodule Teiserver.Api.Key do
+defmodule Teiserver.API.Key do
   @moduledoc false
   use TeiserverWeb, :schema
 
@@ -7,7 +7,7 @@ defmodule Teiserver.Api.Key do
     field :name, :string
     field :description, :string
 
-    has_many :permissions, Teiserver.Api.Permission
+    has_many :permissions, Teiserver.API.Permission
     belongs_to :owner, Teiserver.Account.User
   end
 

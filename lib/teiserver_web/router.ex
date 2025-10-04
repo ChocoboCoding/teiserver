@@ -428,6 +428,12 @@ defmodule TeiserverWeb.Router do
     post "/end_game_data", SpadsController, :end_game_data
   end
 
+  scope "/teiserver/api/protected", TeiserverWeb.API, as: :ts do
+    pipe_through([:api])
+
+    get "/:name", RestrictedController, :call_api
+  end
+
   scope "/teiserver/api/public", TeiserverWeb.API, as: :ts do
     pipe_through([:api])
     get "/leaderboard", PublicController, :leaderboard

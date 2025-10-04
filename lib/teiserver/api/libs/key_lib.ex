@@ -1,5 +1,5 @@
-defmodule Teiserver.Api.PermissionLib do
-  alias Teiserver.Api.Key
+defmodule Teiserver.API.KeyLib do
+  alias Teiserver.API.Key
 
   @spec get_key(String.t()) :: Key.t() | nil
   def get_key(key) do
@@ -15,7 +15,7 @@ defmodule Teiserver.Api.PermissionLib do
 
       key ->
         key
-        |> Permission.changeset(attrs)
+        |> Key.changeset(attrs)
         |> Repo.update()
     end
   end

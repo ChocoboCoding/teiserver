@@ -1,4 +1,4 @@
-defmodule Teiserver.Api.Permission do
+defmodule Teiserver.API.Permission do
   @moduledoc false
   use TeiserverWeb, :schema
 
