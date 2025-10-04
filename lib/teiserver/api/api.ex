@@ -7,8 +7,8 @@ defmodule Teiserver.API do
   @spec set_key(map()) :: any
   defdelegate set_key(attrs), to: KeyLib
 
-  @spec get_permission(String.t()) :: Permission.t() | nil
-  defdelegate get_permission(name), to: PermissionLib
+  #  @spec get_permission(String.t()) :: Permission.t() | nil
+  #  defdelegate get_permission(name), to: PermissionLib
 
   @spec get_module(String.t()) :: module() | nil
   defdelegate get_module(name), to: PermissionLib
