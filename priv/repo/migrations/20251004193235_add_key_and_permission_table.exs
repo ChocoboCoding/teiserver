@@ -2,11 +2,10 @@ defmodule Teiserver.Repo.Migrations.AddKeyAndPermissionTable do
   use Ecto.Migration
 
   def change do
-    create table(:api_keys, primary_key: false) do
-      add :key, :string, primary_key: true
-      add :name, :string, null: false
-      add :description, :string
-      add :owner_id, references(:account_users)
+    create table(:bot_users, primary_key: false) do
+      add :name, :string, null: false, primary_key: true
+      add :secret, :string
+      add :creator_id, references(:account_users)
 
       timestamps()
     end
@@ -18,11 +17,11 @@ defmodule Teiserver.Repo.Migrations.AddKeyAndPermissionTable do
       timestamps()
     end
 
-    create table(:api_keys_permissions) do
-      add :api_key_id, references(:api_keys, type: :string, on_delete: :delete_all)
+    create table(:bot_user_permissions) do
+      add :bot_user_id, references(:bot_users, type: :string, on_delete: :delete_all)
       add :permission_id, references(:api_permissions, type: :string, on_delete: :deleta_all)
     end
 
-    create unique_index(:api_keys_permissions, [:api_key_id, :permission_id])
+    create unique_index(:bot_user_permissions, [:bot_user_id, :permission_id])
   end
 end

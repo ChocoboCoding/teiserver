@@ -19,23 +19,27 @@ defmodule Teiserver.API.PermissionLib do
   def set_permission(module) do
     name = obfuscate_module(module)
 
-    case get_permission(name) do
-      nil ->
-        Permission.changeset(%Permission{}, %{name: name, module: Atom.to_string(module)})
-        |> Repo.insert()
-
-      permission ->
-        permission
-        |> Permission.changeset(%{module: Atom.to_string(module)})
-        |> Repo.update()
-    end
+    Repo.insert!(
+      %Permission{
+        name: name,
+        module: Atom.to_string(module)
+      },
+      on_conflict: :replace_all,
+      conflict_target: :module
+    )
   end
 
-  @spec obfuscate_module(module()) :: any
+  @spec delete_permission(String.t()) :: any
+  def delete_permission(permission_name) do
+    permission = Repo.get!(Permission, permission_name)
+    Repo.delete(permission)
+  end
+
+  @spec obfuscate_module(module()) :: String.t()
   defp obfuscate_module(module) do
     module
     |> Atom.to_string()
-    |> :crypto.hash(:sha256)
+    |> then(&:crypto.hash(:sha256, &1))
     |> Base.encode16(case: :lower)
     |> binary_part(0, @name_length)
   end

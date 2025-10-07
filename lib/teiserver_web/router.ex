@@ -51,6 +51,11 @@ defmodule TeiserverWeb.Router do
     plug(:accepts, ["json"])
   end
 
+  pipeline :protected_api do
+    plug(:accepts, ["json"])
+    plug(Teiserver.Api.JWTAuthPlug)
+  end
+
   pipeline :spads_api do
     plug(:accepts, ["json"])
     plug(Teiserver.Plugs.BasicAuthBotPlug)
@@ -429,9 +434,16 @@ defmodule TeiserverWeb.Router do
   end
 
   scope "/teiserver/api/protected", TeiserverWeb.API, as: :ts do
+    pipe_through([:protected_api])
+
+    get "/:name", ProtectedController, :call_api
+  end
+
+  scope "/teiserver/api/protected", TeiserverWeb.API, as: :ts do
     pipe_through([:api])
 
-    get "/:name", RestrictedController, :call_api
+    get "/new_user", Protected.TestController, :generate_user
+    post "/get_token", ProtectedController, :generate_jwt
   end
 
   scope "/teiserver/api/public", TeiserverWeb.API, as: :ts do

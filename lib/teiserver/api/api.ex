@@ -16,9 +16,9 @@ defmodule Teiserver.API do
   @spec set_permission(module()) :: any
   defdelegate set_permission(module), to: PermissionLib
 
-  def register_api(module) do
+  def register(module) do
     quote do
-      set_permission(unquote(module))
+      Teiserver.API.set_permission(unquote(module))
     end
   end
 
